@@ -87,9 +87,70 @@ export default function Home() {
       ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section with Ethereal Beams */}
-      <EtherealBeamsHero />
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
+      {/* Hero Section with Ethereal Beams - Only visible in dark mode */}
+      {mounted && (resolvedTheme === "dark" || theme === "dark") && <EtherealBeamsHero />}
+      
+      {/* Light Mode Hero Section - Only visible in light mode */}
+      {mounted && (resolvedTheme === "light" || theme === "light") && (
+        <section className="relative z-10 w-full overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/30">
+          <div className="relative z-10 flex items-center justify-center min-h-screen">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-20">
+              <div className="mx-auto max-w-4xl text-center">
+                {/* Main Heading */}
+                <motion.h1 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-6 text-4xl font-bold tracking-tight text-gray-950 xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl px-2"
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    letterSpacing: '-0.02em',
+                    wordBreak: 'break-word',
+                    hyphens: 'auto',
+                  }}
+                >
+                  <span className="text-red-600">L</span>il{" "}
+                  <span className="text-red-600">C</span>heese<span className="text-red-600">C</span>ake
+                  <br />
+                  <span className="bg-gradient-to-r from-purple-700 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    <span className="text-red-600">C</span>orner
+                  </span>
+                </motion.h1>
+
+                {/* Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="mb-8 sm:mb-10 text-base leading-7 text-gray-700 sm:text-lg sm:leading-8 lg:text-2xl max-w-3xl mx-auto px-4"
+                >
+                  Handcrafted cheesecakes made with love and the finest ingredients. Every slice is a moment of pure bliss.
+                </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4"
+                >
+                  <Link href="/products">
+                    <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto shadow-lg shadow-purple-600/30">
+                      Explore Flavors
+                    </Button>
+                  </Link>
+                  <Link href="/order">
+                    <Button variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto">
+                      Order Now
+                    </Button>
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
       
       {/* Bouncing Balls Background for Content Sections */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -111,21 +172,21 @@ export default function Home() {
       {/* Content */}
       <div className="relative z-10 flex-1">
         {/* Products Preview */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
+        <section className="py-12 sm:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-8 sm:mb-12"
             >
-              <h2 className="text-4xl font-bold mb-4">Our Signature Flavors</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 px-2">Our Signature Flavors</h2>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
                 Discover our most loved handcrafted cheesecakes, made fresh daily.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
               {FEATURED_PRODUCTS.map((product, index) => (
                 <motion.div
                   key={product.name}
@@ -141,25 +202,25 @@ export default function Home() {
               ))}
             </div>
             
-            <div className="text-center mt-12">
+            <div className="text-center mt-8 sm:mt-12">
               <Link href="/products">
-                <Button size="lg" className="text-lg px-8">View All Flavors</Button>
+                <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8">View All Flavors</Button>
               </Link>
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
+        <section className="py-12 sm:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12"
+              className="text-center mb-8 sm:mb-12"
             >
-              <h2 className="text-4xl font-bold mb-4">What Our Customers Say</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 px-2">What Our Customers Say</h2>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
                 Discover why customers love our handcrafted cheesecakes
               </p>
             </motion.div>
@@ -193,14 +254,14 @@ export default function Home() {
         </section>
 
         {/* Contact CTA */}
-        <section className="py-20 bg-card/80 backdrop-blur-sm border-y">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold mb-6">Ready to Order?</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <section className="py-12 sm:py-20 bg-card/80 backdrop-blur-sm border-y">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 px-2">Ready to Order?</h2>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4">
               Have a special request or question? Get in touch with us and we&apos;ll make your cheesecake dreams come true.
             </p>
             <Link href="/contact">
-              <Button size="lg" className="text-lg px-8">Contact Us</Button>
+              <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8">Contact Us</Button>
             </Link>
           </div>
         </section>
