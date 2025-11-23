@@ -8,6 +8,8 @@ export default defineSchema({
         price: v.number(),
         image: v.string(),
         flavor: v.string(),
+        originalPrice: v.optional(v.number()),
+        offerText: v.optional(v.string()),
     }),
     testimonials: defineTable({
         name: v.string(),

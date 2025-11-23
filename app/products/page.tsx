@@ -1,75 +1,13 @@
 "use client";
 
-import ProductCard from "@/components/ProductCard";
+import { ProductCard } from "@/components/ui/product-card-2";
 import { motion } from "framer-motion";
-
-const ALL_PRODUCTS = [
-  {
-    name: "Classic New York",
-    description: "Rich and creamy traditional cheesecake with a graham cracker crust. A timeless favorite.",
-    price: 45,
-    image: "/images/cheesecake.png",
-    flavor: "Classic",
-  },
-  {
-    name: "Strawberry Bliss",
-    description: "Our classic cheesecake topped with fresh strawberry glaze and berries.",
-    price: 50,
-    image: "/images/cheesecake.png",
-    flavor: "Strawberry",
-  },
-  {
-    name: "Blueberry Dream",
-    description: "Swirled with wild blueberry compote and topped with fresh blueberries.",
-    price: 52,
-    image: "/images/cheesecake.png",
-    flavor: "Blueberry",
-  },
-  {
-    name: "Chocolate Decadence",
-    description: "Rich chocolate cheesecake with chocolate ganache and chocolate shavings.",
-    price: 55,
-    image: "/images/cheesecake.png",
-    flavor: "Chocolate",
-  },
-  {
-    name: "Lemon Zest",
-    description: "Light and tangy lemon cheesecake with a buttery graham cracker base.",
-    price: 48,
-    image: "/images/cheesecake.png",
-    flavor: "Lemon",
-  },
-  {
-    name: "Caramel Pecan",
-    description: "Creamy cheesecake topped with caramel sauce and toasted pecans.",
-    price: 53,
-    image: "/images/cheesecake.png",
-    flavor: "Caramel",
-  },
-  {
-    name: "Oreo Cookies & Cream",
-    description: "Loaded with Oreo cookies throughout and topped with cookie crumbles.",
-    price: 54,
-    image: "/images/cheesecake.png",
-    flavor: "Oreo",
-  },
-  {
-    name: "Raspberry Swirl",
-    description: "Elegant raspberry swirls throughout a vanilla cheesecake base.",
-    price: 51,
-    image: "/images/cheesecake.png",
-    flavor: "Raspberry",
-  },
-  {
-    name: "Pumpkin Spice",
-    description: "Seasonal favorite with warm spices and a gingersnap crust.",
-    price: 49,
-    image: "/images/cheesecake.png",
-    flavor: "Pumpkin",
-  },
-];
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function ProductsPage() {
+  const products = useQuery(api.products.get);
+
   return (
     <div className="min-h-screen bg-background py-16">
       <div className="container mx-auto px-4">
@@ -79,7 +17,7 @@ export default function ProductsPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 font-serif text-primary">
             Our Cheesecakes
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -87,18 +25,35 @@ export default function ProductsPage() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {ALL_PRODUCTS.map((product, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {products?.map((product, index) => (
             <motion.div
-              key={product.name}
+              key={product._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
-              className="flex justify-center"
+              className="flex justify-center h-full"
             >
-              <ProductCard {...product} />
+              <div className="w-full max-w-sm h-full">
+                <ProductCard
+                  name={product.name}
+                  tagline={product.description}
+                  price={product.price}
+                  imageUrl={product.image}
+                  originalPrice={product.originalPrice}
+                  offerText={product.offerText}
+                  description={product.description}
+                  flavor={product.flavor}
+                />
+              </div>
             </motion.div>
           ))}
+          {products === undefined && (
+             <div className="col-span-full text-center py-12">Loading our menu...</div>
+          )}
+          {products?.length === 0 && (
+             <div className="col-span-full text-center py-12">No products available at the moment. Check back soon!</div>
+          )}
         </div>
       </div>
     </div>
