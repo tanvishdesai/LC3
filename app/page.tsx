@@ -1,14 +1,12 @@
 "use client";
-
 import WarmHero from "@/components/ui/warm-hero";
-import { ProductCard } from "@/components/ui/product-card-2";
+import { ProductCard, ProductCardProps } from "@/components/ui/product-card-2";
 import { Button } from "@/components/ui/button";
 import CircularTestimonials from "@/components/ui/circular-testimonials";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-
 const TESTIMONIALS_DATA = [
   {
     quote:
@@ -32,10 +30,8 @@ const TESTIMONIALS_DATA = [
     src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
   },
 ];
-
 export default function Home() {
-  const products = useQuery(api.products.get);
-  const featuredProducts = products?.slice(0, 3) || [];
+const products = useQuery(api.products.getFeatured);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -59,9 +55,9 @@ export default function Home() {
                 Discover our most loved handcrafted cheesecakes, made fresh daily.
               </p>
             </motion.div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {featuredProducts.map((product, index) => (
+              {products ? (
+                products.map((product, index) => (
                 <motion.div
                   key={product._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -71,22 +67,26 @@ export default function Home() {
                   className="flex justify-center h-full"
                 >
                   <div className="w-full max-w-sm h-full">
-                    <ProductCard
+                    <ProductCard 
                       name={product.name}
-                      tagline={product.description} // Using description as tagline for now
-                      price={product.price}
                       imageUrl={product.image}
+                      price={product.price}
                       originalPrice={product.originalPrice}
                       offerText={product.offerText}
+                      tagline={product.flavor}
                       description={product.description}
                       flavor={product.flavor}
                     />
                   </div>
                 </motion.div>
-              ))}
-              {products === undefined && (
-                 // Loading skeleton or placeholder could go here
-                 <div className="col-span-full text-center py-12">Loading deliciousness...</div>
+              ))
+            ) : (
+                // Loading Skeletons
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex justify-center h-full">
+                     <div className="w-full max-w-sm h-[400px] rounded-xl bg-muted animate-pulse" />
+                  </div>
+                ))
               )}
             </div>
             
@@ -97,7 +97,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Testimonials Section */}
         <section className="py-20">
           <div className="container mx-auto px-4">
@@ -113,7 +112,6 @@ export default function Home() {
                 Discover why customers love our handcrafted cheesecakes
               </p>
             </motion.div>
-
             <div className="flex justify-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -142,7 +140,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Contact CTA */}
         <section className="py-20 bg-primary/5 border-y border-primary/10">
           <div className="container mx-auto px-4 text-center">

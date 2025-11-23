@@ -19,7 +19,34 @@ export const get = query({
                     try {
                         const url = await ctx.storage.getUrl(product.image);
                         if (url) imageUrl = url;
-                    } catch  {
+                    } catch {
+                        console.error("Failed to resolve storage ID:", product.image);
+                    }
+                }
+                return { ...product, image: imageUrl };
+            })
+        );
+    },
+});
+
+export const getFeatured = query({
+    args: {},
+    handler: async (ctx) => {
+        const products = await ctx.db.query("products").collect();
+        const sortedProducts = products.sort((a, b) => a.price - b.price).slice(0, 3);
+        return await Promise.all(
+            sortedProducts.map(async (product) => {
+                let imageUrl = product.image;
+                const isStorageId = product.image &&
+                    !product.image.includes("/") &&
+                    !product.image.includes(".") &&
+                    !product.image.startsWith("http");
+
+                if (isStorageId) {
+                    try {
+                        const url = await ctx.storage.getUrl(product.image);
+                        if (url) imageUrl = url;
+                    } catch {
                         console.error("Failed to resolve storage ID:", product.image);
                     }
                 }

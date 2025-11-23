@@ -559,20 +559,21 @@ export default function EtherealBeamsHero() {
 
       {/* ========== HERO CONTENT LAYER ========== */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-20">
           <div className="mx-auto max-w-4xl text-center">
             {/* Main Heading */}
             <h1 
-              className={`mb-6 text-6xl font-bold tracking-tight ${textColor} sm:text-7xl lg:text-8xl transition-all duration-500`}
+              className={`mb-6 text-4xl font-bold tracking-tight ${textColor} xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl transition-all duration-500 px-2`}
               style={{
                 fontFamily: 'Inter, sans-serif',
                 letterSpacing: '-0.02em',
                 filter: headingShadow,
+                wordBreak: 'break-word',
+                hyphens: 'auto',
               }}
             >
               <span className={`transition-colors duration-500 ${isDark ? 'text-red-500' : 'text-red-600'}`}>L</span>il{" "}
-              <span className={`transition-colors duration-500 ${isDark ? 'text-red-500' : 'text-red-600'}`}>C</span>heese
-              <span className={`transition-colors duration-500 ${isDark ? 'text-red-500' : 'text-red-600'}`}>C</span>ake
+              <span className={`transition-colors duration-500 ${isDark ? 'text-red-500' : 'text-red-600'}`}>C</span>heese<span className={`transition-colors duration-500 ${isDark ? 'text-red-500' : 'text-red-600'}`}>C</span>ake
               <br />
               <span
                 className={`bg-gradient-to-r transition-all duration-500 bg-clip-text text-transparent ${
@@ -587,7 +588,7 @@ export default function EtherealBeamsHero() {
 
             {/* Subtitle */}
             <p
-              className={`mb-10 text-lg leading-8 ${subtitleColor} sm:text-xl lg:text-2xl max-w-3xl mx-auto transition-all duration-500`}
+              className={`mb-8 sm:mb-10 text-base leading-7 ${subtitleColor} sm:text-lg sm:leading-8 lg:text-2xl max-w-3xl mx-auto transition-all duration-500 px-4`}
               style={{
                 filter: subtitleShadow,
               }}
@@ -596,11 +597,11 @@ export default function EtherealBeamsHero() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
               <Link href="/products">
                 <BeamButton
                   size="sm"
-                  className={`font-semibold transition-all duration-300 ${
+                  className={`font-semibold transition-all duration-300 w-full sm:w-auto ${
                     isDark ? "shadow-2xl shadow-white/25" : "shadow-lg shadow-purple-600/30"
                   }`}
                 >
@@ -609,7 +610,7 @@ export default function EtherealBeamsHero() {
                 </BeamButton>
               </Link>
               <Link href="/order">
-                <BeamButton variant="outline" size="sm" className="font-semibold">
+                <BeamButton variant="outline" size="sm" className="font-semibold w-full sm:w-auto">
                   Order Now
                 </BeamButton>
               </Link>
