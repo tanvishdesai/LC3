@@ -58,6 +58,8 @@ export const CircularTestimonials = ({
   colors = {},
   fontSizes = {},
 }: CircularTestimonialsProps) => {
+
+
   // Color & font config
   const colorName = colors.name ?? "#000";
   const colorDesignation = colors.designation ?? "#6b7280";
@@ -192,6 +194,10 @@ export const CircularTestimonials = ({
     exit: { opacity: 0, y: -20 },
   };
 
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <div className="testimonial-container">
       <div className="testimonial-grid">
@@ -204,7 +210,7 @@ export const CircularTestimonials = ({
               alt={testimonial.name}
               className="testimonial-image"
               data-index={index}
-              style={getImageStyle(index)}
+              style={{ ...getImageStyle(index), objectFit: "contain" }}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
             />
@@ -318,7 +324,7 @@ export const CircularTestimonials = ({
           position: absolute;
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
           border-radius: 1.5rem;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }

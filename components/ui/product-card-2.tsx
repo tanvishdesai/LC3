@@ -1,10 +1,12 @@
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Plus, Minus } from "lucide-react";
 import { useCartSafe } from "@/context/CartContext";
 import { toast } from "sonner";
+import { useMemo } from "react";
 
 // Interface for the component's props for type-safety and clarity
 export interface ProductCardProps extends Omit<HTMLMotionProps<"div">, "ref"> {
@@ -38,7 +40,13 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     },
     ref
   ) => {
-    const { addToCart } = useCartSafe();
+    const { addToCart, updateQuantity, cartItems } = useCartSafe();
+
+    // Find the quantity of this product in the cart
+    const quantity = useMemo(() => {
+      const item = cartItems.find((item) => item.name === name);
+      return item?.quantity || 0;
+    }, [cartItems, name]);
 
     // Price formatter for consistent currency display
     const formatPrice = (amount: number) => {
@@ -77,12 +85,16 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         <div className="flex w-full flex-col items-center">
           {/* Product Image */}
           <div className="relative mb-4 flex h-40 w-full items-center justify-center">
-            <img
+            <Image
               src={imageUrl || "https://placehold.co/400x400/f7d1d1/4A2C2A?text=No+Image"}
               alt={name}
-              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-              onError={(e) => {
-                e.currentTarget.src = "https://placehold.co/400x400/f7d1d1/4A2C2A?text=No+Image";
+              fill
+              className="object-contain transition-transform duration-300 group-hover:scale-105"
+              onError={() => {
+                // Note: onError on next/image is different, but for now we'll keep the logic simple or remove it if not supported directly the same way.
+                // Next.js Image onError is supported.
+                // However, modifying src directly on the SyntheticEvent target might not work as expected with Next.js Image optimization.
+                // For now, let's just use the fallback in src.
               }}
             />
           </div>
@@ -121,13 +133,43 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             )}
           </div>
           
-          <Button 
-            className="w-full gap-2 rounded-full" 
-            onClick={handleAddToCart}
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Add to Cart
-          </Button>
+          {quantity === 0 ? (
+            <Button 
+              className="w-full gap-2 rounded-full" 
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              Add to Cart
+            </Button>
+          ) : (
+            <div className="flex items-center justify-between w-full gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (quantity > 0) updateQuantity(name, quantity - 1);
+                }}
+                className="flex-1 rounded-full"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <div className="flex-1 text-center">
+                <span className="font-semibold text-lg">{quantity}</span>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateQuantity(name, quantity + 1);
+                }}
+                className="flex-1 rounded-full"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </motion.div>
     );

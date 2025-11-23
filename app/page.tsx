@@ -1,37 +1,16 @@
 "use client";
 import WarmHero from "@/components/ui/warm-hero";
-import { ProductCard, ProductCardProps } from "@/components/ui/product-card-2";
+import { ProductCard } from "@/components/ui/product-card-2";
 import { Button } from "@/components/ui/button";
 import CircularTestimonials from "@/components/ui/circular-testimonials";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-const TESTIMONIALS_DATA = [
-  {
-    quote:
-      "The best cheesecake I've ever had! The texture is perfect and the flavors are incredible. I ordered the Strawberry Bliss for my daughter's birthday and everyone loved it.",
-    name: "Sarah Johnson",
-    designation: "Happy Customer",
-    src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
-  },
-  {
-    quote:
-      "Ordered the Classic New York for our anniversary. It was absolutely divine! The delivery was prompt and the packaging was beautiful.",
-    name: "Mike Chen",
-    designation: "Verified Buyer",
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
-  },
-  {
-    quote:
-      "The Chocolate Decadence is to die for! Rich, creamy, and not too sweet. I'm a regular customer now and have tried almost every flavor.",
-    name: "Emily Rodriguez",
-    designation: "Loyal Customer",
-    src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
-  },
-];
+
 export default function Home() {
 const products = useQuery(api.products.getFeatured);
+const testimonials = useQuery(api.testimonials.get);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -120,7 +99,12 @@ const products = useQuery(api.products.getFeatured);
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <CircularTestimonials
-                  testimonials={TESTIMONIALS_DATA}
+                  testimonials={testimonials ? testimonials.map(t => ({
+                    quote: t.content,
+                    name: t.name,
+                    designation: "Verified Customer",
+                    src: t.image
+                  })) : []}
                   autoplay={true}
                   colors={{
                     name: "hsl(var(--foreground))",

@@ -66,7 +66,7 @@ export default function WarmHero() {
             <div className="absolute inset-0 border-[10px] border-background pointer-events-none z-20 rounded-3xl lg:rounded-none" />
             
             {/* Logo Cover Patch - Hides the 'Built with Spline' logo */}
-            <div className="absolute bottom-4 right-4 w-[720px] h-[40px] bg-background z-30" />
+            <div className="absolute bottom-0 right-0 w-full h-[75px] bg-background z-30 translate-y-4" />
           </motion.div>
         </div>
       </div>

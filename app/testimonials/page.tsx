@@ -5,46 +5,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Star } from "lucide-react";
 
-const TESTIMONIALS = [
-  {
-    name: "Sarah Johnson",
-    content: "The best cheesecake I've ever had! The texture is perfect and the flavors are incredible. I ordered the Strawberry Bliss for my daughter's birthday and everyone loved it.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
-  },
-  {
-    name: "Mike Chen",
-    content: "Ordered the Classic New York for our anniversary. It was absolutely divine! The delivery was prompt and the packaging was beautiful.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
-  },
-  {
-    name: "Emily Rodriguez",
-    content: "The Chocolate Decadence is to die for! Rich, creamy, and not too sweet. I'm a regular customer now and have tried almost every flavor.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80",
-  },
-  {
-    name: "David Thompson",
-    content: "Amazing quality and taste! The Blueberry Dream is my favorite. Perfect for special occasions or just treating yourself.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
-  },
-  {
-    name: "Lisa Anderson",
-    content: "I'm gluten-sensitive and they made a special crust for me. The attention to detail and customer service is outstanding!",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80",
-  },
-  {
-    name: "James Wilson",
-    content: "The Oreo Cookies & Cream is phenomenal! Ordered it for my office party and it was gone in minutes. Everyone wanted to know where I got it.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80",
-  },
-];
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function TestimonialsPage() {
+  const testimonials = useQuery(api.testimonials.get);
   return (
     <div className="min-h-screen bg-background py-16">
       <div className="container mx-auto px-4">
@@ -63,9 +28,9 @@ export default function TestimonialsPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {TESTIMONIALS.map((testimonial, index) => (
+          {testimonials?.map((testimonial, index) => (
             <motion.div
-              key={testimonial.name}
+              key={testimonial._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
@@ -75,7 +40,7 @@ export default function TestimonialsPage() {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden">
                       <Image
-                        src={testimonial.image}
+                        src={testimonial.image || "https://placehold.co/400x400/f7d1d1/4A2C2A?text=No+Image"}
                         alt={testimonial.name}
                         fill
                         className="object-cover"
@@ -84,7 +49,7 @@ export default function TestimonialsPage() {
                     <div>
                       <h3 className="font-bold text-lg">{testimonial.name}</h3>
                       <div className="flex gap-1">
-                        {Array.from({ length: testimonial.rating }).map((_, i) => (
+                        {Array.from({ length: Math.round(testimonial.rating) }).map((_, i) => (
                           <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
@@ -95,6 +60,12 @@ export default function TestimonialsPage() {
               </Card>
             </motion.div>
           ))}
+          {!testimonials && (
+            // Loading Skeletons
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-48 rounded-xl bg-muted animate-pulse" />
+            ))
+          )}
         </div>
       </div>
     </div>

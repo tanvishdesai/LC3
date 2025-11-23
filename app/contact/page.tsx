@@ -131,6 +131,8 @@ export default function ContactPage() {
                     <h3 className="font-bold text-lg mb-1">Call Us</h3>
                     <p className="text-muted-foreground">
                       +91 99980 51609<br />
+                      +91 63532 08421
+                      <br />
                       Mon-Sun, 9am-9pm
                     </p>
                   </div>

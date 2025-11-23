@@ -35,6 +35,7 @@ export default function Footer() {
               <li>Gujarat, India</li>
               <li>makgrish104@gmail.com</li>
               <li>+91 99980 51609</li>
+              <li>+91 63532 08421</li>
             </ul>
           </div>
 
