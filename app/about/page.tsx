@@ -1,4 +1,4 @@
-// Start of Selection
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -53,13 +53,6 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl"
           >
-            <Image
-              src="/images/g&A.png"
-              alt="Grish and Aastha baking together"
-              fill
-              className="object-cover"
-              priority
-            />
           </motion.div>
         </div>
       </div>
